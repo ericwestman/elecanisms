@@ -1,0 +1,7 @@
+*.swp
+*.hex
+*.lst
+*.cof
+.*
+*.pyc
+*.o
