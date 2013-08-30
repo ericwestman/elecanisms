@@ -128,8 +128,6 @@ void VendorRequestsOut(void) {
 }
 
 void accel_write(unsigned char address, unsigned char value) {
-    unsigned char tmp;
-
     ACCEL_CS = 0;
     spi_transfer(&spi1, 0x80|((address&0x3F)<<1));
     spi_transfer(&spi1,value&0xFF);
