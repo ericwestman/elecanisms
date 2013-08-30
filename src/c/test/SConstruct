@@ -46,7 +46,10 @@ env.Program('xltest', ['xltest.c',
 
 print('Compiling...')
 env.Hex('xltest')
+env.Hex('gyrotest')
 print('Disassembling...')
 env.List('xltest')
+env.List('gyrotest')
 print('Executing bootloader commands...')
-env.Load('xltest')
+#env.Load('xltest')
+env.Load('gyrotest')

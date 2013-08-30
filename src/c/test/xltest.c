@@ -143,10 +143,6 @@ unsigned char accel_read(unsigned char address) {
     return result;
 }
 
-signed char accel_read_signed(unsigned char address) {
-
-}
-
 void accel_init(void) {
 
     TRISBbits.TRISB13 = 0;
