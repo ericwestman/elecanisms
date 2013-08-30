@@ -25,7 +25,7 @@ env.Append(BUILDERS = {'List' : list})
 print('Creating builder to load hex file via bootloader...')
 def load_function(target, source, env):
     bl = b.bootloadercmd()
-    bl.import_hex('xltest.hex')
+    bl.import_hex(source[0].rstr())
     bl.write_device()
     bl.bootloader.start_user()
     bl.bootloader.close()
@@ -44,6 +44,15 @@ env.Program('xltest', ['xltest.c',
                        '../lib/timer.c', 
                        '../lib/descriptors.c'])
 
+env.Program('gyrotest',['gyrotest.c', 
+                       '../lib/usb.c',
+                       '../lib/spi.c',
+                       '../lib/ui.c',
+                       '../lib/pin.c',
+                       '../lib/timer.c', 
+                       '../lib/descriptors.c'])
+ 
+
 print('Compiling...')
 env.Hex('xltest')
 env.Hex('gyrotest')
@@ -51,5 +60,4 @@ print('Disassembling...')
 env.List('xltest')
 env.List('gyrotest')
 print('Executing bootloader commands...')
-#env.Load('xltest')
 env.Load('gyrotest')
