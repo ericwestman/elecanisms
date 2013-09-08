@@ -1,7 +1,7 @@
 #ifndef _USB_H_
 #define _USB_H_
 
-#include "util.h"
+#include "common.h"
 
 #define	NUM_CONFIGURATIONS	1
 #define	NUM_INTERFACES		1

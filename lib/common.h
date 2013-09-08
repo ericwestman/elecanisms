@@ -20,6 +20,9 @@
 #define bitclear(addr, bit)     *(addr) &= ~(1<<bit)
 #define bitflip(addr, bit)      *(addr) ^= 1<<bit
 
+
+typedef unsigned char BYTE;
+
 typedef union {
     int16_t i;
     uint16_t w;
