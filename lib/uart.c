@@ -1,9 +1,36 @@
+/*
+** Copyright (c) 2013, Bradley A. Minch
+** All rights reserved.
+**
+** Redistribution and use in source and binary forms, with or without
+** modification, are permitted provided that the following conditions are met: 
+** 
+**     1. Redistributions of source code must retain the above copyright 
+**        notice, this list of conditions and the following disclaimer. 
+**     2. Redistributions in binary form must reproduce the above copyright 
+**        notice, this list of conditions and the following disclaimer in the 
+**        documentation and/or other materials provided with the distribution. 
+**
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
+** AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
+** IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
+** ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE 
+** LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
+** CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 
+** SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
+** INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
+** CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
+** ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+** POSSIBILITY OF SUCH DAMAGE.
+*/
 #include <p24FJ128GB206.h>
 #include "common.h"
+#include "pin.h"
 #include "uart.h"
 
 _UART uart1, uart2, uart3, uart4;
 _UART *_stdout, *_stderr;
+_PIN AJTX, AJRX;
 
 void __putc_nobuffer(_UART *self, uint8_t ch) {
     while (bitread(self->UxSTA, 9)==1) {}   // Wait until TX buffer is not full
@@ -113,6 +140,13 @@ int16_t write(int16_t handle, void *buffer, uint16_t len) {
 }
 
 void init_uart(void) {
+    init_pin();
+
+    pin_init(&AJTX, (uint16_t *)&PORTG, (uint16_t *)&TRISG, 
+             (uint16_t *)NULL, 6, -1, 8, 21, (uint16_t *)&RPOR10);
+    pin_init(&AJRX, (uint16_t *)&PORTG, (uint16_t *)&TRISG, 
+             (uint16_t *)NULL, 7, -1, 0, 26, (uint16_t *)&RPOR13);
+
     uart_init(&uart1, (uint16_t *)&U1MODE, (uint16_t *)&U1STA, 
               (uint16_t *)&U1TXREG, (uint16_t *)&U1RXREG, 
               (uint16_t *)&U1BRG, (uint16_t *)&IFS0, 
@@ -133,6 +167,10 @@ void init_uart(void) {
               (uint16_t *)&U4BRG, (uint16_t *)&IFS5, 
               (uint16_t *)&IEC5, 9, 8, (uint16_t *)&RPINR27, 
               (uint16_t *)&RPINR27, 0, 8, 30, 31);
+
+    uart_open(&uart1, &AJTX, &AJRX, NULL, NULL, 19200., 'N', 1, 
+              0, NULL, 0, NULL, 0);
+
     _stdout = &uart1;
     _stderr = &uart1;
 }
