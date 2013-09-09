@@ -152,7 +152,7 @@
 #define EP15OUT                 30
 #define EP15IN                  31
 
-//typedef unsigned char BYTE;
+typedef unsigned char BYTE;
 
 //typedef union {
 //	int i;
