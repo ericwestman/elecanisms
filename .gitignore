@@ -2,6 +2,7 @@
 *.hex
 *.lst
 *.cof
+*.elf
 .*
 *.pyc
 *.o
