@@ -21,7 +21,12 @@ int16_t main(void) {
             led_toggle(&led1);
             led_toggle(&led2);
         }
-        led_write(&led3, !sw_read(&sw3));
+        if (!sw_read(&sw2)) {
+            led_write(&led2, !sw_read(&sw2));
+        }
+        if (!sw_read(&sw3)) {
+            led_write(&led3, !sw_read(&sw3));
+        }
     }
 }
 
