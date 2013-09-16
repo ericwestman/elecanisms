@@ -27,6 +27,9 @@ int16_t main(void) {
         if (!sw_read(&sw3)) {
             led_write(&led3, !sw_read(&sw3));
         }
+        else {
+            led_write(&led3, 0);
+        }
     }
 }
 
